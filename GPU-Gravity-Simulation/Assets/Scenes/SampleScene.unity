@@ -438,9 +438,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimulationManager
   particlePrefab: {fileID: 482417198}
-  nParticles: 3
-  simulationSize: 5
-  gravityMultiplier: 3.83
+  nParticles: 436
+  simulationSize: 84.3
+  gravityMultiplier: 3
+  simulationSpeed: 2
 --- !u!4 &1147470636
 Transform:
   m_ObjectHideFlags: 0

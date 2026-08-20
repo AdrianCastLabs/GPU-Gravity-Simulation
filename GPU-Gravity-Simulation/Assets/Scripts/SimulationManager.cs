@@ -11,6 +11,7 @@ public class SimulationManager : MonoBehaviour
     public int nParticles;
     public float simulationSize;
     public float gravityMultiplier;
+    public float simulationSpeed;
     
     private Vector3[] positions;
     private Vector3[] velocities;
@@ -45,12 +46,17 @@ public class SimulationManager : MonoBehaviour
                 
                 Vector3 direction = positions[j] - positions[i];
                 float distance = direction.magnitude;
+                if (distance < 0.1f) continue;
                 float forceMagnitude = gravityMultiplier / (distance * distance);
-                velocities[i] += forceMagnitude * direction * Time.deltaTime;
+                velocities[i] += forceMagnitude * direction * Time.deltaTime * simulationSpeed;
             }
             
-            
-            positions[i] += velocities[i] * Time.deltaTime;
+        }
+        
+        for (int i = 0; i < nParticles; i++)
+        {
+            positions[i] += velocities[i] * Time.deltaTime * simulationSpeed;
+            positions[i].z = 0f;
             gameObjects[i].transform.position = positions[i];
         }
     }
