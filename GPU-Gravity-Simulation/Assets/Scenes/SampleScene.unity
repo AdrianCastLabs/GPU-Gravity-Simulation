@@ -182,7 +182,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 1930
+  orthographic size: 381
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -440,12 +440,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SimulationManager
   particlePrefab: {fileID: 482417198}
   nParticles: 200
-  simulationSize: 2319
+  simulationSize: 2284.9
   gravityMultiplier: 1
-  simulationSpeed: 1
-  minMass: 5
+  deltaTime: 0.02
+  minMass: 1
   maxMass: 50
-  initialVelocity: 404.3
+  initialVelocity: 0
 --- !u!4 &1147470636
 Transform:
   m_ObjectHideFlags: 0

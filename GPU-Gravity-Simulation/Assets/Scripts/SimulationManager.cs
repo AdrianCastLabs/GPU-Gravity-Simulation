@@ -11,7 +11,7 @@ public class SimulationManager : MonoBehaviour
     public int nParticles;
     public float simulationSize;
     public float gravityMultiplier;
-    public float simulationSpeed;
+    public float deltaTime;
     public float minMass;
     public float maxMass;
     public float initialVelocity;
@@ -33,8 +33,8 @@ public class SimulationManager : MonoBehaviour
         // Initialize particles
         for (int i = 0; i < nParticles; i++)
         {
-            positions[i] = Random.insideUnitSphere * simulationSize;
-            velocities[i] = Random.insideUnitSphere * initialVelocity;
+            positions[i] = Random.insideUnitCircle * simulationSize;
+            velocities[i] = Random.insideUnitCircle * initialVelocity;
             masses[i] = Random.Range(minMass, maxMass);
             gameObjects[i] = Instantiate(particlePrefab, positions[i], Quaternion.identity);
             gameObjects[i].transform.localScale *= masses[i] / 3;
@@ -53,16 +53,17 @@ public class SimulationManager : MonoBehaviour
                 
                 Vector3 direction = positions[j] - positions[i];
                 float distance = direction.magnitude;
-                if (distance < 0.1f) continue;
-                float forceMagnitude = gravityMultiplier * ((masses[i] * masses[j]) / (distance * distance));
-                velocities[i] += forceMagnitude * direction * Time.deltaTime * simulationSpeed;
+                if (distance < 1f) continue;
+                
+                Vector3 acceleration = direction.normalized * gravityMultiplier * masses[j] / (distance * distance);
+                velocities[i] += acceleration * deltaTime;
             }
             
         }
         
         for (int i = 0; i < nParticles; i++)
         {
-            positions[i] += velocities[i] * Time.deltaTime * simulationSpeed;
+            positions[i] += velocities[i] * deltaTime;
             positions[i].z = 0f;
             gameObjects[i].transform.position = positions[i];
         }
