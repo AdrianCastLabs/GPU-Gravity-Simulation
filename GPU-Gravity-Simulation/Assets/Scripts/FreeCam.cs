@@ -3,6 +3,8 @@ using UnityEngine;
 public class FreeCam : MonoBehaviour
 {
     Vector3 dragOrigin;
+
+    public float scrollSensitivity;
     
     void Update()
     {
@@ -15,6 +17,6 @@ public class FreeCam : MonoBehaviour
             transform.position += diff;
         }
         
-        Camera.main.orthographicSize = Mathf.Max(0.1f, Camera.main.orthographicSize - Input.mouseScrollDelta.y);
+        Camera.main.orthographicSize = Mathf.Max(0.1f, Camera.main.orthographicSize - Input.mouseScrollDelta.y * scrollSensitivity);
     }
 }

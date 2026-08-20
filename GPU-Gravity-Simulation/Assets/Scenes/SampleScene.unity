@@ -182,7 +182,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 1930
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -716}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1be3f1e334464949b733364d900a3ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreeCam
+  scrollSensitivity: 20
 --- !u!1 &482417198
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,10 +439,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimulationManager
   particlePrefab: {fileID: 482417198}
-  nParticles: 436
-  simulationSize: 84.3
-  gravityMultiplier: 3
-  simulationSpeed: 2
+  nParticles: 200
+  simulationSize: 2319
+  gravityMultiplier: 1
+  simulationSpeed: 1
+  minMass: 5
+  maxMass: 50
+  initialVelocity: 404.3
 --- !u!4 &1147470636
 Transform:
   m_ObjectHideFlags: 0
