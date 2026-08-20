@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1be3f1e334464949b733364d900a3ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreeCam
-  scrollSensitivity: 20
+  scrollSensitivity: 800
 --- !u!1 &482417198
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,13 +439,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimulationManager
   particlePrefab: {fileID: 482417198}
-  nParticles: 200
-  simulationSize: 2284.9
-  gravityMultiplier: 1
-  deltaTime: 0.02
+  nParticles: 400
+  simulationSize: 4000
+  gravityMultiplier: 300
+  deltaTime: 0.5
   minMass: 1
-  maxMass: 50
+  maxMass: 100
   initialVelocity: 0
+  particleSize: 5
 --- !u!4 &1147470636
 Transform:
   m_ObjectHideFlags: 0

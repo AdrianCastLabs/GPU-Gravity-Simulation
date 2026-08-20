@@ -15,6 +15,7 @@ public class SimulationManager : MonoBehaviour
     public float minMass;
     public float maxMass;
     public float initialVelocity;
+    public float particleSize;
     
     private Vector3[] positions;
     private Vector3[] velocities;
@@ -37,7 +38,6 @@ public class SimulationManager : MonoBehaviour
             velocities[i] = Random.insideUnitCircle * initialVelocity;
             masses[i] = Random.Range(minMass, maxMass);
             gameObjects[i] = Instantiate(particlePrefab, positions[i], Quaternion.identity);
-            gameObjects[i].transform.localScale *= masses[i] / 3;
         }
         
     }
@@ -52,8 +52,10 @@ public class SimulationManager : MonoBehaviour
                 if (i == j) continue;
                 
                 Vector3 direction = positions[j] - positions[i];
+                
                 float distance = direction.magnitude;
-                if (distance < 1f) continue;
+                
+                if (distance < 0.1f + masses[i]) continue;
                 
                 Vector3 acceleration = direction.normalized * gravityMultiplier * masses[j] / (distance * distance);
                 velocities[i] += acceleration * deltaTime;
@@ -66,6 +68,8 @@ public class SimulationManager : MonoBehaviour
             positions[i] += velocities[i] * deltaTime;
             positions[i].z = 0f;
             gameObjects[i].transform.position = positions[i];
+            gameObjects[i].transform.localScale = new Vector3(particleSize + masses[i], particleSize + masses[i], particleSize + masses[i]);
+
         }
     }
 }
