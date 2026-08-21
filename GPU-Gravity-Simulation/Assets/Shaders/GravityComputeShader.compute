@@ -7,7 +7,6 @@ int nParticles;
 float gravity;
 float smoothingRadius;
 float mass;
-float4 simulationSize;
 float dt;
 
 [numthreads(64,1,1)]

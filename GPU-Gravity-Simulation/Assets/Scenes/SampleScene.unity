@@ -479,14 +479,14 @@ MonoBehaviour:
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   pointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: b7e7639a19d2aff45bb1ec460302b0c7, type: 2}
-  gravity: 1
+  gravity: 0.4
   nParticles: 50000
   particleRadius: 3
-  simulationSize: {x: 300, y: 300}
+  simulationSize: 100
   smoothingRadius: 3
   mass: 5
   dt: 0.02
-  spiralVelocity: 2
+  spiralVelocity: 4
   InitializeSpiral: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

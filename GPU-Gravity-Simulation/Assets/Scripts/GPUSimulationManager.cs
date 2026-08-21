@@ -15,7 +15,7 @@ public class GPUSimulationManager : MonoBehaviour
     [SerializeField] private float gravity;
     [SerializeField] private int nParticles;
     [SerializeField] private float particleRadius;
-    [SerializeField] private Vector2 simulationSize;
+    [SerializeField] private float simulationSize;
     [SerializeField] private float smoothingRadius;
     [SerializeField] private float mass;
     [SerializeField] private float dt;
@@ -57,9 +57,9 @@ public class GPUSimulationManager : MonoBehaviour
         for (int i = 0; i < nParticles; i++)
         {
             float angle = Random.Range(0f, Mathf.PI * 2f);
-            float radius = Mathf.Sqrt(Random.Range(0f, 1f)) * simulationSize.x; 
+            float radius = Mathf.Sqrt(Random.Range(0f, 1f)) * simulationSize; 
 
-            radius = Mathf.Pow(Random.Range(0f, 1f), 2f) * simulationSize.x;
+            radius = Mathf.Pow(Random.Range(0f, 1f), 2f) * simulationSize;
 
             float x = Mathf.Cos(angle) * radius;
             float y = Mathf.Sin(angle) * radius;
@@ -67,8 +67,8 @@ public class GPUSimulationManager : MonoBehaviour
             if (InitializeSpiral)
                 positions[i] = new Vector2(x, y);
             else
-                positions[i] = new Vector2(Random.Range(-simulationSize.x, simulationSize.x),
-                    Random.Range(-simulationSize.y, simulationSize.y));
+                positions[i] = new Vector2(Random.Range(-simulationSize, simulationSize),
+                    Random.Range(-simulationSize, simulationSize));
 
             Vector2 radialDir = new Vector2(x, y).normalized;
             Vector2 tangent = new Vector2(-radialDir.y, radialDir.x);
@@ -97,7 +97,6 @@ public class GPUSimulationManager : MonoBehaviour
         computeShader.SetFloat("smoothingRadius", smoothingRadius);
         computeShader.SetFloat("mass", mass);
         computeShader.SetFloat("dt", dt);
-        computeShader.SetVector("simulationSize", simulationSize);
     }
     
     private void InitializeRendering()
@@ -162,6 +161,16 @@ public class GPUSimulationManager : MonoBehaviour
             particleRadius += 1f;
         if (Input.GetKeyDown(KeyCode.Semicolon))
             particleRadius -= 1f;
+        
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            simulationSize += 10f;
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+            simulationSize -= 10f;
+        
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            gravity += 1f;
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            gravity -= 1f;
 
         if (Input.GetKeyDown(KeyCode.N))
             InitializeSpiral = !InitializeSpiral;
