@@ -480,12 +480,13 @@ MonoBehaviour:
   pointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: b7e7639a19d2aff45bb1ec460302b0c7, type: 2}
   gravity: 1
-  nParticles: 70000
-  particleRadius: 2
-  simulationSize: {x: 100, y: 100, z: 0}
+  nParticles: 50000
+  particleRadius: 3
+  simulationSize: {x: 200, y: 200, z: 0}
   smoothingRadius: 2
   mass: 5
   dt: 0.02
+  spiralVelocity: 2.2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

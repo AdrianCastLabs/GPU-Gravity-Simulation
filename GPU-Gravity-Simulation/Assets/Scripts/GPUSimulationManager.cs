@@ -19,6 +19,7 @@ public class GPUSimulationManager : MonoBehaviour
     [SerializeField] private float smoothingRadius;
     [SerializeField] private float mass;
     [SerializeField] private float dt;
+    [SerializeField] private float spiralVelocity;
 
     private int kernelComputeGravity;
     
@@ -52,18 +53,24 @@ public class GPUSimulationManager : MonoBehaviour
 
         for (int i = 0; i < nParticles; i++)
         {
-            positions[i] = new Vector3(
-                Random.Range(-simulationSize.x, simulationSize.x),
-                Random.Range(-simulationSize.y, simulationSize.y),
-                0.0f
-            );
-            
-            velocities[i] = new Vector3(
-                Random.Range(-1.0f, 1.0f),
-                Random.Range(-1.0f, 1.0f),
-                0.0f
-            );
-           
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            float radius = Mathf.Sqrt(Random.Range(0f, 1f)) * simulationSize.x; 
+
+            radius = Mathf.Pow(Random.Range(0f, 1f), 2f) * simulationSize.x;
+
+            float x = Mathf.Cos(angle) * radius;
+            float y = Mathf.Sin(angle) * radius;
+
+            float z = Random.Range(-0.05f, 0.05f) * simulationSize.x;
+
+            positions[i] = new Vector3(x, y, z);
+
+            Vector3 radialDir = new Vector3(x, y, 0f).normalized;
+            Vector3 tangent = new Vector3(-radialDir.y, radialDir.x, 0f);
+
+            float speed = Mathf.Sqrt(radius + 0.1f) * spiralVelocity;
+
+            velocities[i] = tangent * speed;
         }
 
         positionsBuffer = new ComputeBuffer(nParticles, sizeof(float) * 3);
