@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SimulationManager : MonoBehaviour
+public class CPUSimulationManager : MonoBehaviour
 {
     [Header("Simulation Settings")]
     public GameObject particlePrefab;

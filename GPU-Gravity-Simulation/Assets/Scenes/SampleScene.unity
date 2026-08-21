@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1be3f1e334464949b733364d900a3ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FreeCam
-  scrollSensitivity: 800
+  scrollSensitivity: 50
 --- !u!1 &482417198
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1147470636}
   - component: {fileID: 1147470635}
+  - component: {fileID: 1147470637}
   m_Layer: 0
   m_Name: SimulationManager
   m_TagString: Untagged
@@ -433,7 +434,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147470634}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1c66cea0fec7a24e8f5fe6ef778442a, type: 3}
   m_Name: 
@@ -462,6 +463,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1147470637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147470634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3e646b06a5c3d44bb35c65a4bde71bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GPUSimulationManager
+  computeShader: {fileID: 7200000, guid: 2d5aa98a33cba914781e23f06f00b7b4, type: 3}
+  mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  pointMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  material: {fileID: 2100000, guid: b7e7639a19d2aff45bb1ec460302b0c7, type: 2}
+  gravity: 1
+  nParticles: 70000
+  particleRadius: 2
+  simulationSize: {x: 100, y: 100, z: 0}
+  smoothingRadius: 2
+  mass: 5
+  dt: 0.02
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
