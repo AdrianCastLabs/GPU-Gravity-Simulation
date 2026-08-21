@@ -22,8 +22,8 @@ Shader "Custom/BillboardParticles"
 
             #include "UnityCG.cginc"
 
-            StructuredBuffer<float3> positions;
-            StructuredBuffer<float3> velocities;
+            StructuredBuffer<float2> positions;
+            StructuredBuffer<float2> velocities;
             StructuredBuffer<float> densities;
 
             float _Size;
@@ -49,32 +49,24 @@ Shader "Custom/BillboardParticles"
             {
                 v2f o;
 
-                float3 particlePos =
-                    positions[v.instanceID];
+                  float2 particlePos = positions[v.instanceID];
 
-                // Camera right vector
-                float3 right =
-                    UNITY_MATRIX_V[0].xyz;
+                 float3 worldPos = float3(
+                     particlePos.x + v.vertex.x * _Size,
+                     particlePos.y + v.vertex.y * _Size,
+                      0.0
+                  );
 
-                // Camera up vector
-                float3 up =
-                    UNITY_MATRIX_V[1].xyz;
+                 o.pos = mul(
+                     UNITY_MATRIX_VP,
+                     float4(worldPos, 1.0)
+                 );
 
-                float3 worldPos =
-                    particlePos
-                    + right * v.vertex.x * _Size
-                    + up    * v.vertex.y * _Size;
+                  o.uv = v.uv;
+                  o.speed = length(velocities[v.instanceID]);
 
-                o.pos = mul(
-                    UNITY_MATRIX_VP,
-                    float4(worldPos, 1)
-                );
-
-                o.uv = v.uv;
-                o.speed = length(velocities[v.instanceID]);
-
-                return o;
-            }
+                 return o;
+                         }
             
             float3 Heatmap(float t)
             {

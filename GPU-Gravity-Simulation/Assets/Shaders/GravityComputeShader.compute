@@ -1,7 +1,7 @@
 #pragma kernel ComputeGravity
 
-RWStructuredBuffer<float3> positions;
-RWStructuredBuffer<float3> velocities;
+RWStructuredBuffer<float2> positions;
+RWStructuredBuffer<float2> velocities;
 
 int nParticles;
 float gravity;
@@ -15,14 +15,14 @@ void ComputeGravity(uint3 id : SV_DispatchThreadID)
 {
     if (id.x >= (uint)nParticles) return;
 
-    float3 pos = positions[id.x];
-    float3 force = float3(0,0,0);
+    float2 pos = positions[id.x];
+    float2 force = float2(0,0);
 
     for (uint i = 0; i < (uint)nParticles; i++)
     {
         if (i == id.x) continue;
 
-        float3 dir = positions[i] - pos;
+        float2 dir = positions[i] - pos;
         float distSq = dot(dir, dir) + smoothingRadius * smoothingRadius;
         float invDist = rsqrt(distSq);
 

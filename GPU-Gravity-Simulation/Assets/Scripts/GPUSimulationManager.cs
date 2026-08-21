@@ -15,16 +15,17 @@ public class GPUSimulationManager : MonoBehaviour
     [SerializeField] private float gravity;
     [SerializeField] private int nParticles;
     [SerializeField] private float particleRadius;
-    [SerializeField] private Vector3 simulationSize;
+    [SerializeField] private Vector2 simulationSize;
     [SerializeField] private float smoothingRadius;
     [SerializeField] private float mass;
     [SerializeField] private float dt;
     [SerializeField] private float spiralVelocity;
+    [SerializeField] private bool InitializeSpiral; 
 
     private int kernelComputeGravity;
     
-    private Vector3[] positions;
-    private Vector3[] velocities;
+    private Vector2[] positions;
+    private Vector2[] velocities;
 
     private ComputeBuffer positionsBuffer;
     private ComputeBuffer velocitiesBuffer;
@@ -32,6 +33,8 @@ public class GPUSimulationManager : MonoBehaviour
     
     private uint[] args = new uint[5] { 0, 0, 0, 0, 0 };
     private Bounds bounds;
+    
+    
     
     private void Start()
     {
@@ -48,8 +51,8 @@ public class GPUSimulationManager : MonoBehaviour
     
     private void InitializeParticles()
     {
-        positions = new Vector3[nParticles];
-        velocities = new Vector3[nParticles];
+        positions = new Vector2[nParticles];
+        velocities = new Vector2[nParticles];
 
         for (int i = 0; i < nParticles; i++)
         {
@@ -60,23 +63,25 @@ public class GPUSimulationManager : MonoBehaviour
 
             float x = Mathf.Cos(angle) * radius;
             float y = Mathf.Sin(angle) * radius;
+            
+            if (InitializeSpiral)
+                positions[i] = new Vector2(x, y);
+            else
+                positions[i] = new Vector2(Random.Range(-simulationSize.x, simulationSize.x),
+                    Random.Range(-simulationSize.y, simulationSize.y));
 
-            float z = Random.Range(-0.05f, 0.05f) * simulationSize.x;
-
-            positions[i] = new Vector3(x, y, z);
-
-            Vector3 radialDir = new Vector3(x, y, 0f).normalized;
-            Vector3 tangent = new Vector3(-radialDir.y, radialDir.x, 0f);
+            Vector2 radialDir = new Vector2(x, y).normalized;
+            Vector2 tangent = new Vector2(-radialDir.y, radialDir.x);
 
             float speed = Mathf.Sqrt(radius + 0.1f) * spiralVelocity;
 
             velocities[i] = tangent * speed;
         }
 
-        positionsBuffer = new ComputeBuffer(nParticles, sizeof(float) * 3);
+        positionsBuffer = new ComputeBuffer(nParticles, sizeof(float) * 2);
         positionsBuffer.SetData(positions);
         
-        velocitiesBuffer = new ComputeBuffer(nParticles, sizeof(float) * 3);
+        velocitiesBuffer = new ComputeBuffer(nParticles, sizeof(float) * 2);
         velocitiesBuffer.SetData(velocities);
         
         computeShader.SetBuffer(kernelComputeGravity, "positions",  positionsBuffer);
@@ -117,12 +122,71 @@ public class GPUSimulationManager : MonoBehaviour
     
     private void Update()
     {
+        HandleControls();
+    
         SetComputeShaderParameters();
         RunComputeShader();
         RenderParticles();
-        
+    
         material.SetFloat("_Size", particleRadius);
+    }
+
+    private void HandleControls()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+            ResetSimulation();
+
+        if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.KeypadPlus))
+            ChangeParticleCount(10000);
+
+        if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus))
+            ChangeParticleCount(-10000);
+
+        if (Input.GetKeyDown(KeyCode.G))
+            gravity = -gravity;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            paused = !paused;
         
+        if (Input.GetKeyDown(KeyCode.RightBracket))
+            spiralVelocity += 0.5f;
+        if (Input.GetKeyDown(KeyCode.LeftBracket))
+            spiralVelocity -= 0.5f;
+        
+        if (Input.GetKeyDown(KeyCode.Period))
+            dt += 0.01f;
+        if (Input.GetKeyDown(KeyCode.Comma))
+            dt -= 0.01f;
+        
+        if (Input.GetKeyDown(KeyCode.Quote))
+            particleRadius += 1f;
+        if (Input.GetKeyDown(KeyCode.Semicolon))
+            particleRadius -= 1f;
+
+        if (Input.GetKeyDown(KeyCode.N))
+            InitializeSpiral = !InitializeSpiral;
+    }
+
+    private bool paused = false;
+
+    private void ResetSimulation()
+    {
+        ReleaseBuffers();
+        InitializeParticles();
+        InitializeRendering();
+    }
+
+    private void ChangeParticleCount(int delta)
+    {
+        nParticles = Mathf.Max(1000, nParticles + delta);
+        ResetSimulation();
+    }
+
+    private void ReleaseBuffers()
+    {
+        positionsBuffer?.Release();
+        velocitiesBuffer?.Release();
+        argsBuffer?.Release();
     }
     
     private void RunComputeShader()
@@ -142,6 +206,7 @@ public class GPUSimulationManager : MonoBehaviour
             argsBuffer
         );
     }
+    
 
     private void OnDestroy()
     {

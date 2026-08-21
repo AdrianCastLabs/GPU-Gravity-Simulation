@@ -482,11 +482,12 @@ MonoBehaviour:
   gravity: 1
   nParticles: 50000
   particleRadius: 3
-  simulationSize: {x: 200, y: 200, z: 0}
-  smoothingRadius: 2
+  simulationSize: {x: 300, y: 300}
+  smoothingRadius: 3
   mass: 5
   dt: 0.02
-  spiralVelocity: 2.2
+  spiralVelocity: 2
+  InitializeSpiral: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
